@@ -1,5 +1,6 @@
 export default class Post {
-    constructor(title) {
+    constructor(title, image) {
+        this.image = image
         this.title = title
         this.date = new Date()
     }
@@ -8,6 +9,7 @@ export default class Post {
         return JSON.stringify({
             title: this.title,
             date: this.date.toJSON(),
+            image: this.image,
         })
     }
 }
