@@ -13,6 +13,13 @@ module.exports = {
         filename: '[name].[contenthash].js', //naming pattern, unique bundle names
         path: path.resolve(__dirname, 'dist'),
     },
+    resolve: {
+        extensions: ['.js', '.json', '.png'],
+        alias: {
+            '@models': path.resolve(__dirname, 'src/models'),
+            '@': path.resolve(__dirname, 'src'),
+        }
+    },
     plugins: [
         new HTMLWebpackPlugin({
             template: './index.html',
@@ -28,6 +35,18 @@ module.exports = {
             {
                 test: /\.(png|jpg|svg|gif)$/,
                 type: 'asset/resource'
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.xml$/,
+                use: ['xml-loader']
+            },
+            {
+                test: /\.csv$/,
+                use: ['csv-loader']
             }
         ]
     }
