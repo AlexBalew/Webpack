@@ -2,6 +2,10 @@ const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require("terser-webpack-plugin")
+
+const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
@@ -24,7 +28,9 @@ module.exports = {
     optimization: {
         splitChunks: {
             chunks: 'all'
-        }
+        },
+        minimize: true, //минимизируются все файлы в дист
+        minimizer: [new TerserPlugin()]
     },
     devServer: {
         historyApiFallback: true,
@@ -34,6 +40,9 @@ module.exports = {
     plugins: [
         new HTMLWebpackPlugin({
             template: './index.html',
+            minify: {
+                collapseWhitespace: true
+            }
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin({
@@ -41,13 +50,21 @@ module.exports = {
                 from: path.resolve(__dirname, 'src/assets/favicon.ico'),
                 to: path.resolve(__dirname, 'dist'),
             }]
+        }),
+        new MiniCSSExtractPlugin({
+            filename: '[name].[contenthash].css'
         })
     ],
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                test: /\.css$/i,
+                use: [
+                    {
+                        loader: MiniCSSExtractPlugin.loader,
+                        options: {}
+                    }, 'css-loader'
+                ]
             },
             {
                 test: /\.(png|jpg|svg|gif)$/,
