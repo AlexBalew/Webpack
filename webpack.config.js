@@ -5,13 +5,29 @@ const CopyPlugin = require('copy-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require("terser-webpack-plugin")
 
-const isDev = process.env.NODE_ENV === 'development'
+//const isDev = process.env.NODE_ENV === 'development'
+
+const babelOptions = preset => {
+
+    const opts = {
+        presets: [
+            '@babel/preset-env',
+        ],
+        plugins: [
+            '@babel/plugin-proposal-class-properties'
+        ]
+    }
+    if(preset) {
+        opts.presets.push(preset)
+    }
+    return opts
+}
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        main: ['@babel/polyfill', './index.js',],
+        main: ['@babel/polyfill', './index.jsx',],
         analytics: './analytics.ts'
     },
     output: {
@@ -107,12 +123,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
-                    options: {
-                        presets: ['@babel/preset-env'],
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties'
-                        ]
-                    }
+                    options: babelOptions()
                 }
             },
             {
@@ -120,15 +131,15 @@ module.exports = {
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
-                    options: {
-                        presets: [
-                            '@babel/preset-env',
-                            '@babel/preset-typescript'
-                        ],
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties'
-                        ]
-                    }
+                    options: babelOptions('@babel/preset-typescript')
+                }
+            },
+            {
+                test: /\.m?jsx$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: babelOptions('@babel/preset-react')
                 }
             }
         ]
