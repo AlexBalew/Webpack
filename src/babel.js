@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 async function start() {
     return 'async is working';
 }
