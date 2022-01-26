@@ -5,6 +5,7 @@ import json from './assets/json.json'
 import WebpackLogo from './assets/webpack-logo' //расширение файла не пишем, т.к. они указаны в extensions webpack config
 import xml from '@/assets/data.xml' //@ заменяет . или  src. alias webpack config
 import csv from './assets/data.csv'
+import './babel'
 
 const post = new Post('Webpack Post Title', WebpackLogo)
 
