@@ -1,6 +1,7 @@
 const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
@@ -25,11 +26,22 @@ module.exports = {
             chunks: 'all'
         }
     },
+    devServer: {
+        historyApiFallback: true,
+        port: 4848,
+        open: true,
+    },
     plugins: [
         new HTMLWebpackPlugin({
             template: './index.html',
         }),
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        new CopyPlugin({
+            patterns: [{
+                from: path.resolve(__dirname, 'src/assets/favicon.ico'),
+                to: path.resolve(__dirname, 'dist'),
+            }]
+        })
     ],
     module: {
         rules: [

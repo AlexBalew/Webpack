@@ -8,7 +8,7 @@ import csv from './assets/data.csv'
 
 const post = new Post('Webpack Post Title', WebpackLogo)
 
-$('pre').html(post.toString())
+$('pre').addClass('code').html(post.toString())
 
 console.log('Post to String:', post.toString())
 console.log('JSON:', json)
