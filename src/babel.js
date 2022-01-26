@@ -3,3 +3,9 @@ async function start() {
 }
 
 start().then(console.log)
+
+class Util {
+    static id = new Date()
+}
+
+console.log('Util id: ', Util.id)
