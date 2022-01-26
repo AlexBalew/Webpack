@@ -53,6 +53,7 @@ module.exports = {
         port: 4848,
         open: true,
     },
+    devtool: 'source-map',
     plugins: [
         new HTMLWebpackPlugin({
             template: './index.html',
